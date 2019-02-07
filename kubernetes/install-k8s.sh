@@ -1,17 +1,14 @@
 #!/bin/bash
 
-if [ "$(id -u)" != "0" ]; then
-  echo "[ERROR] You need to have root privileges."
-  exit 0
-fi
-
 echo "[INFO] Disabling swap..."
 
 swapoff -a
 
-echo "[INFO] Installing Kubernetes..."
+echo "[INFO] Updating packages..."
 
 apt-get update 
+
+echo "[INFO] Installing Kubernetes..."
 
 apt-get install -y \
   apt-transport-https \
@@ -31,4 +28,5 @@ apt-get install -y kubelet kubeadm kubectl
 
 KUBE_VERSION=$(kubectl version | base64 | tr -d '\n')
 
-echo "[INFO] Done! Kubernetes ${KUBE_VERSION} has been installed. Have fun!"
+echo "[INFO] Done! Kubernetes has been installed."
+echo "[INFO] Try out 'kubectl version' command to test the installation."

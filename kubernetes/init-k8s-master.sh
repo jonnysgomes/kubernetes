@@ -4,11 +4,6 @@ LOCAL_USER=$(whoami)
 
 declare -r KUBE_HOME=/home/$LOCAL_USER/.kube
 
-if [ "$(id -u)" != "0" ]; then
-  echo "[ERROR] You need to have root privileges."
-  exit 0
-fi
-
 echo "Initializing kubeadm..."
 
 kubeadm init --feature-gates Auditing=true
