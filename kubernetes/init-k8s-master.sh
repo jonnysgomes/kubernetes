@@ -1,6 +1,11 @@
 #!/bin/bash
 
-LOCAL_USER=$(whoami)
+if [ "$1" == "" ]; then
+  echo "You must to pass the user name or you can just run 'sudo ./init-k8s-master.sh $(whoami)'."
+  exit 0
+fi
+
+declare -r LOCAL_USER=$1
 
 declare -r KUBE_HOME=/home/$LOCAL_USER/.kube
 
@@ -18,11 +23,7 @@ chown ${LOCAL_USER}:${LOCAL_USER} ${KUBE_HOME}/config
 
 echo "Installing Weave Net Add-On..."
 
-KUBE_VERSION=$(kubectl version | base64 | tr -d '\n')
-
-echo "[INFO] Using Kubernetes version: ${KUBE_VERSION}"
-
-kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=${KUBE_VERSION}"
+kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
 echo "Done!"
 
