@@ -1,5 +1,12 @@
 #!/bin/bash
 
+if [ "$1" == "" ]; then
+  echo "You must to pass the user name. Like this: 'sudo ./init-k8s-master.sh $(whoami)'."
+  exit 0
+fi
+
+declare -r LOCAL_USER=$1
+
 echo "[INFO] Installing dependences..."
 
 apt-get update
@@ -28,9 +35,9 @@ echo "[INFO] Docker-ce has been installed with success!"
 
 USER=$(whoami)
 
-echo "[INFO] Adding the user $USER to the docker group in oder to you can use docker as a non-root user..."
+echo "[INFO] Adding the user $LOCAL_USER to the docker group in oder to you can use docker as a non-root user..."
 
-sudo usermod -aG docker $USER
+sudo usermod -aG docker $LOCAL_USER
 
 echo "[INFO] Done! Happy Docker!"
 
