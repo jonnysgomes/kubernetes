@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$1" == "" ]; then
-  echo "You must to pass the user name or you can just run 'sudo ./init-k8s-master.sh $(whoami)'."
+  echo "You must to pass the user name. Like this: 'sudo ./init-k8s-master.sh $(whoami)'."
   exit 0
 fi
 
@@ -11,7 +11,7 @@ declare -r KUBE_HOME=/home/$LOCAL_USER/.kube
 
 echo "Initializing kubeadm..."
 
-kubeadm init --feature-gates Auditing=true
+kubeadm init
 
 echo "[INFO] Configuring kubectl config file..."
 

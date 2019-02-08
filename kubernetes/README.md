@@ -42,11 +42,11 @@ $ sudo ./install-k8s.sh
 
 >NOTE: You need to run the script with root privileges.
 
-## Update the Hostnames [Optinal]
+## Update the Hostnames [Optional]
 
 To change the hostname, open the file `/etc/hostname` and rename the Master machine to `k8s-master` and the Node machine to `k8s-node`. If you will have more than one Node, consider to use an enumeration for the hostnames, like `k8s-node-1`, `k8s-node-2`, etc.
 
-## Update the Host file with the IPs of Master and Node [Optinal]
+## Update the Host file with the IPs of Master and Node [Optional]
 
 Verify the IP address of each machine:
 
@@ -65,7 +65,7 @@ Go to the `/etc/hosts` file on both the master and node and add an entry specify
 <node_2_IP>  k8s-node-2
 ```
 
-## Setting static IP addresses [Optinal]
+## Setting static IP addresses [Optional]
 
 Since the IP address of our machines can be eventually modified, it's a good practice setting up a static IP for each machine of the cluster. To do that, go to the `/etc/network/interfaces` file and add the following lines:
 
@@ -82,20 +82,54 @@ Do that for each machine.
 Just run the script `kubernetes/init-k8s-master` script.
 
 ```
-$ sudo ./init-k8s-master.sh
+$ sudo ./init-k8s-master.sh $(whoami)
 ```
 
 >NOTE: You need to run the script with root privileges.
 
+>NOTE: The parameter 'whoami' is mandatory to set your username.
+
+At this point you will receive an instruction to join nodes into your cluster. An example of what this looks like is below:
+
+```
+kubeadm join --token <token> --discovery-token-ca-cert-hash sha256:123456789
+```
+
+Use that instruction in your nodes machines in order to join it into the cluster.
+
 ## Testing the cluster
 
-To make sure everything is OK, run the command bellow from any cluster machine:
+### Master
+
+To make sure everything is OK, run the command bellow:
+
+```
+kubectl get nodes
+```
+
+The output should be something like this:
+
+```
+NAME         STATUS   ROLES    AGE    VERSION
+k8s-master   Ready    master   111m   v1.13.3
+k8s-node-1   Ready    <none>   93m    v1.13.3
+```
+
+### Nodes
+
+If you try to use some 'kubectl' command you will receive a message like this:
+
+`The connection to the server localhost:8080 was refused - did you specify the right host or port`
+
+It happens because you must to have the cluster credentials to access the Master node. Copy the credentials file from the Master (`/home/<master_user>/.kube`) node and put it into `/home/<node_user>/.kube` folder.
+
+Now you should be able to run the following command:
 
 ```
 kubectl get pods --all-namespaces
 ```
 
-## Kubernetes Dashboard
+## Kubernetes Dashboard [Optional]
 
 To install the Dashboard, run the following command:
 
