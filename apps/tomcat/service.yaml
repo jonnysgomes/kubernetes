@@ -9,7 +9,9 @@ spec:
   selector:
     app: tomcat-app
   ports:
-  - port: 8080
-    targetPort: 8080
+  - protocol: TCP
+    nodePort: 30000 # 30000-32767
+    port: 8880 # service port
+    targetPort: 8080 # container port
 
 # kubectl expose deployment tomcat-deployment --type=NodePort
