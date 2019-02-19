@@ -17,3 +17,9 @@ Error: configmaps is forbidden: User "system:serviceaccount:kube-system:default"
 $ kubectl create -f rbac-config.yaml
 
 $ helm init --upgrade --service-account tiller
+
+# Clientes
+
+helm init --client-only
+
+helm repo update
