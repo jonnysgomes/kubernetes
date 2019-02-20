@@ -5,12 +5,13 @@ metadata:
   labels:
     app: wordpress
 spec:
+  type: NodeExporter
   ports:
     - port: 80
-    selector:
-      app: wordpress
-      tier: frontend
-    type: NodeExporter
+  selector:
+    app: wordpress
+    tier: frontend
+    
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
